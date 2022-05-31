@@ -1,0 +1,5 @@
+name: MilitaryFun
+version: '${project.version}'
+main: me.fek.militaryfun.MilitaryFun
+api-version: 1.18
+authors: [ Fek ]
