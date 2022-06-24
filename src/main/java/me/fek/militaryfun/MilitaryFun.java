@@ -14,7 +14,7 @@ public final class MilitaryFun extends JavaPlugin {
 
         ItemManager.Init();
 
-
+        getServer().getPluginManager().registerEvents(new BrokenBlock(), this);
     }
 
     @Override
