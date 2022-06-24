@@ -11,6 +11,10 @@ public final class MilitaryFun extends JavaPlugin {
         System.out.println("Author: Fek");
         System.out.println("Version:");
         System.out.println("==========================");
+
+        ItemManager.Init();
+
+
     }
 
     @Override
