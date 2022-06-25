@@ -35,6 +35,7 @@ public class ItemManager extends JavaPlugin {
     public static ItemStack ferroFundido;
     public static ItemStack tugstenio;
     public static ItemStack picaretaFundida;
+    public static ItemStack munition;
 
 
 
@@ -85,5 +86,19 @@ public class ItemManager extends JavaPlugin {
         shapedRecipe.setIngredient('I', Material.IRON_INGOT);
         shapedRecipe.setIngredient('T', new RecipeChoice.ExactChoice(ferroFundido));
         Bukkit.getServer().addRecipe(shapedRecipe);
+    }
+
+    private static void createMunition(){
+        ItemStack item = new ItemStack(Material.IRON_NUGGET);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName("§8Munição");
+        List<String> lore = new ArrayList<>();
+        lore.add("§3 Munição para armas");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        munition = item;
+
+        //Shapeless Recipe
+
     }
 }

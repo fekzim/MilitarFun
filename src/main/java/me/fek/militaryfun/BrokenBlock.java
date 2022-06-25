@@ -10,6 +10,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 import java.util.Random;
 
+/*
+* Essa classe se trata sobre eventos referentes a quebra de blocos
+* */
 public class BrokenBlock  implements Listener {
 
     @EventHandler
