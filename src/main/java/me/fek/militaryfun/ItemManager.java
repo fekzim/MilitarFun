@@ -18,6 +18,7 @@ public class ItemManager extends JavaPlugin {
         createFerroFundido();
         createTugstenio();
         createPicaretaFundida();
+        createMunition();
     }
 
     //Itens
@@ -85,7 +86,7 @@ public class ItemManager extends JavaPlugin {
     }
 
     private static void createMunition(){
-        ItemStack item = new ItemStack(Material.IRON_NUGGET);
+        ItemStack item = new ItemStack(Material.IRON_NUGGET, 8);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("§8Munição");
         List<String> lore = new ArrayList<>();
@@ -96,6 +97,8 @@ public class ItemManager extends JavaPlugin {
 
         //Shapeless Recipe
         ShapelessRecipe srecipe = new ShapelessRecipe(NamespacedKey.minecraft("munition"), item);
-
+        srecipe.addIngredient(6, Material.GUNPOWDER);
+        srecipe.addIngredient(3, Material.IRON_INGOT);
+        Bukkit.getServer().addRecipe(srecipe);
     }
 }
