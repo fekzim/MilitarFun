@@ -4,10 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Item;
-import org.bukkit.inventory.FurnaceRecipe;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.RecipeChoice;
-import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -17,7 +14,6 @@ import java.util.List;
 public class ItemManager extends JavaPlugin {
 
     public static void Init(){
-        System.out.println("==========================");
         System.out.println("ItemManager Carregado com sucesso");
         createFerroFundido();
         createTugstenio();
@@ -99,6 +95,7 @@ public class ItemManager extends JavaPlugin {
         munition = item;
 
         //Shapeless Recipe
+        ShapelessRecipe srecipe = new ShapelessRecipe(NamespacedKey.minecraft("munition"), item);
 
     }
 }
