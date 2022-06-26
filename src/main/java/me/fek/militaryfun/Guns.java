@@ -30,11 +30,26 @@ public class Guns implements Listener {
         Action action = event.getAction();
         Player player = event.getPlayer();
 
+        ItemStack item = player.getInventory().getItemInMainHand();
+        ItemMeta meta = item.getItemMeta();
+        PersistentDataContainer data = meta.getPersistentDataContainer();
+        if(action == Action.RIGHT_CLICK_AIR && player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("§8§lPistola ")){
+
+            int munition = data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER);
+            if(munition > 0){
+                int municaoFinal =  munition;
+                municaoFinal -= 1;
+                player.sendMessage("BOOM");
+                data.set(new NamespacedKey(MilitaryFun.getPlugin(), "munition"), PersistentDataType.INTEGER, municaoFinal);
+                item.setItemMeta(meta);
+                meta.setDisplayName("§8§lPistola " + ChatColor.WHITE + "["+data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)+"]");
+                item.setItemMeta(meta);
+            }
+
+        }
+
         if(action == Action.RIGHT_CLICK_AIR && player.getInventory().getItemInMainHand().getItemMeta().getDisplayName()
                 .contains("§8§lPistola " + "§f[0]") && player.isSneaking()){
-            ItemStack item = player.getInventory().getItemInMainHand();
-            ItemMeta meta = item.getItemMeta();
-            PersistentDataContainer data = meta.getPersistentDataContainer();
             if(data.has(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)){
 
             }else{
@@ -71,6 +86,15 @@ public class Guns implements Listener {
                     }
                 }
             }
+
+            /*if(action == Action.RIGHT_CLICK_AIR && player.getInventory().getItemInMainHand().getItemMeta().getDisplayName()
+                    .contains("§8§lPistola")){
+                player.sendMessage("BOOM");
+                int munitionFinal = munition;
+                munitionFinal -=1;
+                data.set(new NamespacedKey(MilitaryFun.getPlugin(), "munition"), PersistentDataType.INTEGER, munitionFinal);
+                item.setItemMeta(meta);
+            }*/
             meta.setDisplayName("§8§lPistola " + ChatColor.WHITE + "["+data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)+"]");
             item.setItemMeta(meta);
         }
