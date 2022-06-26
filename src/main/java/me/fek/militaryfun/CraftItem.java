@@ -36,10 +36,14 @@ public class CraftItem implements Listener {
                         continue;
                     }
                     if(item[i].hasItemMeta()){
-                        if(item[i].getItemMeta().getDisplayName().equals("§7Ferro Fundido")){
-                            event.setCancelled(true);
-                            player.sendMessage("Você não pode craftar itens com isso");
-                            break;
+                        switch (item[i].getItemMeta().getDisplayName()) {
+                            case "§7Tugstenio":
+                            case "§8Munição":
+                            case "§7Ferro Fundido" :
+                                event.setCancelled(true);
+                                break;
+                            default:
+                                break;
                         }
                     }
                 }
