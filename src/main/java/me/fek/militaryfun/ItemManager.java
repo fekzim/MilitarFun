@@ -19,6 +19,7 @@ public class ItemManager extends JavaPlugin {
         createTugstenio();
         createPicaretaFundida();
         createMunition();
+        createPistola();
     }
 
     //Itens
@@ -33,6 +34,7 @@ public class ItemManager extends JavaPlugin {
     public static ItemStack tugstenio;
     public static ItemStack picaretaFundida;
     public static ItemStack munition;
+    public static ItemStack pistola;
 
 
 
@@ -100,5 +102,20 @@ public class ItemManager extends JavaPlugin {
         srecipe.addIngredient(6, Material.GUNPOWDER);
         srecipe.addIngredient(3, Material.IRON_INGOT);
         Bukkit.getServer().addRecipe(srecipe);
+    }
+
+    private static void createPistola(){
+        ItemStack item = new ItemStack(Material.MUSIC_DISC_STRAD);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName("§8§lPistola " + "§f[0]");
+        item.setItemMeta(meta);
+        pistola = item;
+
+        ShapedRecipe shapedRecipe = new ShapedRecipe(NamespacedKey.minecraft("pistola"),item);
+        shapedRecipe.shape( "TTT","II ", "I  ");
+
+        shapedRecipe.setIngredient('I', Material.IRON_INGOT);
+        shapedRecipe.setIngredient('T', new RecipeChoice.ExactChoice(ferroFundido));
+        Bukkit.getServer().addRecipe(shapedRecipe);
     }
 }

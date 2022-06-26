@@ -2,10 +2,13 @@ package me.fek.militaryfun;
 
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.FurnaceSmeltEvent;
+import org.bukkit.event.inventory.FurnaceStartSmeltEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,6 +22,15 @@ public class CraftItem implements Listener {
     * §8Munição
     *
     * */
+
+    @EventHandler
+    public void onPlayerSmelt(FurnaceSmeltEvent event){
+        if(event.getSource().getType().equals(Material.IRON_INGOT)){
+            if(event.getSource().getItemMeta().getDisplayName().equals("Ferro Especial")){
+                event.setCancelled(true);
+            }
+        }
+    }
     @EventHandler
     public void onPlayerCraft(CraftItemEvent event){
         for (HumanEntity entity : event.getViewers()) {
@@ -26,7 +38,8 @@ public class CraftItem implements Listener {
                 Player player = (Player) entity;
                 ItemStack[] item = event.getInventory().getMatrix();
 
-                if(event.getRecipe().getResult().getItemMeta().getDisplayName().equals("§8§lPicareta de Ferro fundido")){
+                if(event.getRecipe().getResult().getItemMeta().getDisplayName().equals("§8§lPicareta de Ferro fundido")
+                || event.getRecipe().getResult().getItemMeta().getDisplayName().contains("§8§lPistola " + "§f[0]")){
                     break;
                 }
 
