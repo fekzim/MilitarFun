@@ -6,6 +6,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -108,6 +110,9 @@ public class ItemManager extends JavaPlugin {
         ItemStack item = new ItemStack(Material.MUSIC_DISC_STRAD);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("§8§lPistola " + "§f[0]");
+        PersistentDataContainer data = meta.getPersistentDataContainer();
+        data.set(new NamespacedKey(MilitaryFun.getPlugin(), "munition"), PersistentDataType.INTEGER, 0);
+        data.set(new NamespacedKey(MilitaryFun.getPlugin(), "max-munition"), PersistentDataType.INTEGER, 8);
         item.setItemMeta(meta);
         pistola = item;
 
