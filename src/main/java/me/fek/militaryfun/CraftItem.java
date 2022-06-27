@@ -23,6 +23,7 @@ public class CraftItem implements Listener {
     *
     * */
 
+    //Checar quando um item for derretido
     @EventHandler
     public void onPlayerSmelt(FurnaceSmeltEvent event){
         if(event.getSource().getType().equals(Material.IRON_INGOT)){
@@ -31,6 +32,8 @@ public class CraftItem implements Listener {
             }
         }
     }
+
+    //Checar quando um player craftar algo (clicar no resultado)
     @EventHandler
     public void onPlayerCraft(CraftItemEvent event){
         for (HumanEntity entity : event.getViewers()) {
@@ -38,6 +41,7 @@ public class CraftItem implements Listener {
                 Player player = (Player) entity;
                 ItemStack[] item = event.getInventory().getMatrix();
 
+                //Checar o resultado do craft e permitir eles, checar os nomes de uma lista
                 if(event.getRecipe().getResult().getItemMeta().getDisplayName().equals("§8§lPicareta de Ferro fundido")
                 || event.getRecipe().getResult().getItemMeta().getDisplayName().contains("§8§lPistola " + "§f[0]")){
                     break;
@@ -50,6 +54,7 @@ public class CraftItem implements Listener {
                     }
                     if(item[i].hasItemMeta()){
                         switch (item[i].getItemMeta().getDisplayName()) {
+                            //Checar no futuro todos os nomes de uma lista futuramente aqui
                             case "§7Tugstenio":
                             case "§8Munição":
                             case "§7Ferro Fundido" :

@@ -12,67 +12,82 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.Objects;
+
 public class Guns implements Listener {
-//§8Munição
+
+    //Arrumar um arquivo config com nome das armas que permita o plugin reconhecer todas as armas
+    //para que no futuro não tenhamos que ficar mudando tanto esse codigo para isso
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event){
-        Action action = event.getAction();
-        Player player = event.getPlayer();
-        ItemStack item = player.getInventory().getItemInMainHand();
-        ItemMeta meta = item.getItemMeta();
-        PersistentDataContainer data = meta.getPersistentDataContainer();
-        String mainHandName = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+        //try para caso uma das variaveis/metas estarem vazios um gigante erro no log aparecer
+        try{
+            //variaveis
+            Action action = event.getAction(); //ação do player (clicks)
+            Player player = event.getPlayer(); //Instancia Player do evento
+            ItemStack item = player.getInventory().getItemInMainHand(); //Item que o player esta segurando
+            ItemMeta meta = item.getItemMeta(); //Meta do item atual
+            assert meta != null;
+            PersistentDataContainer data = meta.getPersistentDataContainer(); //Meta data do item atual
+            String mainHandName = Objects.requireNonNull(player.getInventory().getItemInMainHand().getItemMeta()).getDisplayName(); //Pegar o displayname do item da mão
 
-        if(action == Action.RIGHT_CLICK_AIR && mainHandName.contains("§8§lPistola ") && !(player.isSneaking())){
-            if(data.has(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)){
-                if(data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER) > 0 && !(player.isSneaking())){
-                    int municaoFinal =  data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER);
-                    municaoFinal -= 1;
-                    data.set(new NamespacedKey(MilitaryFun.getPlugin(), "munition"), PersistentDataType.INTEGER, municaoFinal);
-                    item.setItemMeta(meta);
-                    meta.setDisplayName("§8§lPistola " + ChatColor.WHITE + "["+data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)+"]");
-                    item.setItemMeta(meta);
+            //Atirar(clicar com direito apenas usando um item chamado pistola)
+            if(action == Action.RIGHT_CLICK_AIR && mainHandName.contains("§8§lPistola ") && !(player.isSneaking())){
+                if(data.has(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)){
+                    if(Objects.requireNonNull(data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)) > 0 && !(player.isSneaking())){
+                        int municaoFinal =  Objects.requireNonNull(data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER));
+                        municaoFinal -= 1;
+                        data.set(new NamespacedKey(MilitaryFun.getPlugin(), "munition"), PersistentDataType.INTEGER, municaoFinal);
+                        item.setItemMeta(meta);
+                        meta.setDisplayName("§8§lPistola " + ChatColor.WHITE + "["+data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)+"]");
+                        item.setItemMeta(meta);
+                    }
+                }else{
+                    player.sendMessage(ChatColor.RED+"Esse item não possui o Item meta necessario");
                 }
-            }else{
-                player.sendMessage(ChatColor.RED+"Esse item não possui o Item meta necessario");
             }
-        }
 
-        if(action == Action.RIGHT_CLICK_AIR && mainHandName.contains("§8§lPistola ") && player.isSneaking()){
-            if(data.has(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)){
-                int size = player.getInventory().getSize();
-                int munition = data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER);
-                int maxMunition = data.get(new NamespacedKey(MilitaryFun.getPlugin(),"max-munition"), PersistentDataType.INTEGER);
-                int finalMunition;
-                if(munition < maxMunition){
-                    for(int slot = 0; slot < size; slot++){
-                        ItemStack is = player.getInventory().getItem(slot);
-                        if(is == null) continue;
-                        if(is.getType() == Material.IRON_NUGGET){
-                            if(is.getItemMeta().getDisplayName().equals("§8Munição")){
-                                int leftMunition = munition - maxMunition;
-                                int newAmount = leftMunition + is.getAmount();
-                                if(newAmount <= 0){
-                                    finalMunition = is.getAmount() + munition;
-                                    player.getInventory().clear(slot);
-                                    data.set(new NamespacedKey(MilitaryFun.getPlugin(), "munition"), PersistentDataType.INTEGER, finalMunition);
-                                    item.setItemMeta(meta);
-                                    break;
-                                }
-                                if(newAmount > 0){
-                                    finalMunition =  (is.getAmount() - newAmount) + munition;
-                                    is.setAmount(newAmount);
-                                    data.set(new NamespacedKey(MilitaryFun.getPlugin(), "munition"), PersistentDataType.INTEGER, finalMunition);
-                                    item.setItemMeta(meta);
-                                    break;
+            //Recarregar arma(clicar direito e estar no shift/Sneaking)
+            if(action == Action.RIGHT_CLICK_AIR && mainHandName.contains("§8§lPistola ") && player.isSneaking()){
+                if(data.has(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)){
+                    int size = player.getInventory().getSize();
+                    int munition = data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER);
+                    int maxMunition = data.get(new NamespacedKey(MilitaryFun.getPlugin(),"max-munition"), PersistentDataType.INTEGER);
+                    int finalMunition;
+                    if(munition < maxMunition){
+                        for(int slot = 0; slot < size; slot++){
+                            ItemStack is = player.getInventory().getItem(slot);
+                            if(is == null) continue;
+                            if(is.getType() == Material.IRON_NUGGET){
+                                if(is.getItemMeta().getDisplayName().equals("§8Munição")){
+                                    int leftMunition = munition - maxMunition;
+                                    int newAmount = leftMunition + is.getAmount();
+                                    if(newAmount <= 0){
+                                        finalMunition = is.getAmount() + munition;
+                                        player.getInventory().clear(slot);
+                                        data.set(new NamespacedKey(MilitaryFun.getPlugin(), "munition"), PersistentDataType.INTEGER, finalMunition);
+                                        item.setItemMeta(meta);
+                                        break;
+                                    }
+                                    if(newAmount > 0){
+                                        finalMunition =  (is.getAmount() - newAmount) + munition;
+                                        is.setAmount(newAmount);
+                                        data.set(new NamespacedKey(MilitaryFun.getPlugin(), "munition"), PersistentDataType.INTEGER, finalMunition);
+                                        item.setItemMeta(meta);
+                                        break;
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                //setar nome da arma no final
+                meta.setDisplayName("§8§lPistola " + ChatColor.WHITE + "["+data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)+"]");
+                item.setItemMeta(meta);
             }
-            meta.setDisplayName("§8§lPistola " + ChatColor.WHITE + "["+data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)+"]");
-            item.setItemMeta(meta);
+        }catch (NullPointerException exception){
+            return;
         }
+
     }
 }

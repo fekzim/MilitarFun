@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ItemManager extends JavaPlugin {
 
+    //Arrumar um arquivo de configuração que permita habilitar e desabilitar certos itens
     public static void Init(){
         System.out.println("ItemManager Carregado com sucesso");
         createFerroFundido();
@@ -68,6 +69,8 @@ public class ItemManager extends JavaPlugin {
         meta.setLore(lore);
         item.setItemMeta(meta);
         tugstenio = item;
+
+        //Item dropado no BrokenBlock.java
     }
 
     private static void createPicaretaFundida() {
@@ -99,7 +102,7 @@ public class ItemManager extends JavaPlugin {
         item.setItemMeta(meta);
         munition = item;
 
-        //Shapeless Recipe
+        //Shapeless Recipe (independente da ordem)
         ShapelessRecipe srecipe = new ShapelessRecipe(NamespacedKey.minecraft("munition"), item);
         srecipe.addIngredient(6, Material.GUNPOWDER);
         srecipe.addIngredient(3, Material.IRON_INGOT);
@@ -111,11 +114,14 @@ public class ItemManager extends JavaPlugin {
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("§8§lPistola " + "§f[0]");
         PersistentDataContainer data = meta.getPersistentDataContainer();
+        //Criação do metadata de maxMunition, munition na hora da criação da arma
         data.set(new NamespacedKey(MilitaryFun.getPlugin(), "munition"), PersistentDataType.INTEGER, 0);
         data.set(new NamespacedKey(MilitaryFun.getPlugin(), "max-munition"), PersistentDataType.INTEGER, 8);
         item.setItemMeta(meta);
         pistola = item;
 
+
+        //Craft do item
         ShapedRecipe shapedRecipe = new ShapedRecipe(NamespacedKey.minecraft("pistola"),item);
         shapedRecipe.shape( "TTT","II ", "I  ");
 
