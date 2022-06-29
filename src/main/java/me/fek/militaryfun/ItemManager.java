@@ -23,6 +23,7 @@ public class ItemManager extends JavaPlugin {
         createPicaretaFundida();
         createMunition();
         createPistola();
+        createTeste();
     }
 
     //Itens
@@ -39,7 +40,7 @@ public class ItemManager extends JavaPlugin {
     public static ItemStack munition;
     public static ItemStack pistola;
 
-
+    public static ItemStack teste;
 
     //Criação dos itens
 
@@ -86,7 +87,6 @@ public class ItemManager extends JavaPlugin {
         //Shaped Recipe
         ShapedRecipe shapedRecipe = new ShapedRecipe(NamespacedKey.minecraft("picareta_fundida"),item);
         shapedRecipe.shape( "TTT"," I ", " I ");
-
         shapedRecipe.setIngredient('I', Material.IRON_INGOT);
         shapedRecipe.setIngredient('T', new RecipeChoice.ExactChoice(ferroFundido));
         Bukkit.getServer().addRecipe(shapedRecipe);
@@ -120,7 +120,6 @@ public class ItemManager extends JavaPlugin {
         item.setItemMeta(meta);
         pistola = item;
 
-
         //Craft do item
         ShapedRecipe shapedRecipe = new ShapedRecipe(NamespacedKey.minecraft("pistola"),item);
         shapedRecipe.shape( "TTT","II ", "I  ");
@@ -128,5 +127,21 @@ public class ItemManager extends JavaPlugin {
         shapedRecipe.setIngredient('I', Material.IRON_INGOT);
         shapedRecipe.setIngredient('T', new RecipeChoice.ExactChoice(ferroFundido));
         Bukkit.getServer().addRecipe(shapedRecipe);
+    }
+
+    private static void createTeste(){
+        ItemStack item = new ItemStack(Material.IRON_SHOVEL, 1);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName("§8§lPistola");
+        List<String> lore = new ArrayList<>();
+        lore.add("§3 Teste");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        teste = item;
+
+        //Shapeless Recipe (independente da ordem)
+        ShapelessRecipe srecipe = new ShapelessRecipe(NamespacedKey.minecraft("teste"), item);
+        srecipe.addIngredient(2, Material.BEDROCK);
+        Bukkit.getServer().addRecipe(srecipe);
     }
 }

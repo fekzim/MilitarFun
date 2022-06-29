@@ -36,6 +36,7 @@ public class Guns implements Listener {
                 if(data.has(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)){
                     if(Objects.requireNonNull(data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)) > 0 && !(player.isSneaking())){
                         int municaoFinal =  Objects.requireNonNull(data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER));
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', MilitaryFun.getPlugin().getConfig().getString("militaryfun.message") + "boom"));
                         municaoFinal -= 1;
                         data.set(new NamespacedKey(MilitaryFun.getPlugin(), "munition"), PersistentDataType.INTEGER, municaoFinal);
                         item.setItemMeta(meta);
@@ -85,7 +86,7 @@ public class Guns implements Listener {
                 meta.setDisplayName("§8§lPistola " + ChatColor.WHITE + "["+data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)+"]");
                 item.setItemMeta(meta);
             }
-        }catch (NullPointerException exception){
+        }catch (Exception exception){
             return;
         }
 
