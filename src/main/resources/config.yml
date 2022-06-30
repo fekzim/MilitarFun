@@ -1,6 +1,20 @@
 militaryfun:
-  message: '&f&l[&6&lMilitar&2Fun&f&l]:&r'
+  message: '&f&l[&6&lMilitar&2Fun&f&l]:&r '
+  language: 'pt-br'
+  crafts: true
 
 itens:
-  name: '&8&lTestedois'
+  name:
+    - '&8&lTeste2'
+    - '&7&lBarra de Tugstenio'
+    - '&8&lPicareta de Ferro fundido'
+    - '&8&lPistola &f[0]'
+    - '&7&lRifle &f[0]'
+  components:
+    - '&7Tugstenio'
+    - '&8Munição'
+    - '&7Ferro Fundido'
+  guns:
+    - '&8&lPistola &f[0]'
+    - '&7&lRifle &f[0]'
 

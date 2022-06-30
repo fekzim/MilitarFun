@@ -4,28 +4,43 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+import sun.security.krb5.Config;
 
+import javax.naming.Name;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemManager extends JavaPlugin {
 
+    static FileConfiguration config = MilitaryFun.getPlugin().getConfig();
+    static Boolean crafts = config.getBoolean("militaryfun.crafts");
     //Arrumar um arquivo de configuração que permita habilitar e desabilitar certos itens
     public static void Init(){
-        System.out.println("ItemManager Carregado com sucesso");
-        createFerroFundido();
-        createTugstenio();
-        createPicaretaFundida();
-        createMunition();
-        createPistola();
-        createTeste();
-        createTestedois();
+        try{
+            createTugstenio();
+            System.out.println("ItemManager Carregado com sucesso");
+                if(crafts){
+                    System.out.println("Crafts geral-permitidos");
+                }else{
+                    System.out.println("Crafts geral-negado");
+                }
+                createFerroFundido();
+                createPicaretaFundida();
+                createMunition();
+                createPistola();
+                createTeste();
+                createTestedois();
+        }catch (Exception exception){
+            System.out.println("ItemManager apresentou um problema " + exception);
+        }
+
     }
 
     //Itens
@@ -59,10 +74,12 @@ public class ItemManager extends JavaPlugin {
         ferroFundido = item;
 
         //Furnace Recipe
-        FurnaceRecipe recipe = new FurnaceRecipe(ferroFundido, Material.IRON_INGOT);
-        recipe.setExperience(100);
-        recipe.setCookingTime(100);
-        Bukkit.getServer().addRecipe(recipe);
+        if(crafts){
+            FurnaceRecipe recipe = new FurnaceRecipe(ferroFundido, Material.IRON_INGOT);
+            recipe.setExperience(100);
+            recipe.setCookingTime(100);
+            Bukkit.getServer().addRecipe(recipe);
+        }
     }
 
     private static void createTugstenio(){
@@ -89,11 +106,13 @@ public class ItemManager extends JavaPlugin {
         picaretaFundida = item;
 
         //Shaped Recipe
-        ShapedRecipe shapedRecipe = new ShapedRecipe(NamespacedKey.minecraft("picareta_fundida"),item);
-        shapedRecipe.shape( "TTT"," I ", " I ");
-        shapedRecipe.setIngredient('I', Material.IRON_INGOT);
-        shapedRecipe.setIngredient('T', new RecipeChoice.ExactChoice(ferroFundido));
-        Bukkit.getServer().addRecipe(shapedRecipe);
+        if(crafts){
+            ShapedRecipe shapedRecipe = new ShapedRecipe(NamespacedKey.minecraft("picareta_fundida"),item);
+            shapedRecipe.shape( "TTT"," I ", " I ");
+            shapedRecipe.setIngredient('I', Material.IRON_INGOT);
+            shapedRecipe.setIngredient('T', new RecipeChoice.ExactChoice(ferroFundido));
+            Bukkit.getServer().addRecipe(shapedRecipe);
+        }
     }
 
     private static void createMunition(){
@@ -107,10 +126,12 @@ public class ItemManager extends JavaPlugin {
         munition = item;
 
         //Shapeless Recipe (independente da ordem)
-        ShapelessRecipe srecipe = new ShapelessRecipe(NamespacedKey.minecraft("munition"), item);
-        srecipe.addIngredient(6, Material.GUNPOWDER);
-        srecipe.addIngredient(3, Material.IRON_INGOT);
-        Bukkit.getServer().addRecipe(srecipe);
+        if(crafts){
+            ShapelessRecipe srecipe = new ShapelessRecipe(NamespacedKey.minecraft("munition"), item);
+            srecipe.addIngredient(6, Material.GUNPOWDER);
+            srecipe.addIngredient(3, Material.IRON_INGOT);
+            Bukkit.getServer().addRecipe(srecipe);
+        }
     }
 
     private static void createPistola(){
@@ -121,16 +142,20 @@ public class ItemManager extends JavaPlugin {
         //Criação do metadata de maxMunition, munition na hora da criação da arma
         data.set(new NamespacedKey(MilitaryFun.getPlugin(), "munition"), PersistentDataType.INTEGER, 0);
         data.set(new NamespacedKey(MilitaryFun.getPlugin(), "max-munition"), PersistentDataType.INTEGER, 8);
+        data.set(new NamespacedKey(MilitaryFun.getPlugin(), "munition-type"), PersistentDataType.STRING, "basic");
+        data.set(new NamespacedKey(MilitaryFun.getPlugin(), "gun-type"), PersistentDataType.STRING, "pistol");
         item.setItemMeta(meta);
         pistola = item;
 
         //Craft do item
-        ShapedRecipe shapedRecipe = new ShapedRecipe(NamespacedKey.minecraft("pistola"),item);
-        shapedRecipe.shape( "TTT","II ", "I  ");
+        if(crafts){
+            ShapedRecipe shapedRecipe = new ShapedRecipe(NamespacedKey.minecraft("pistola"),item);
+            shapedRecipe.shape( "TTT","II ", "I  ");
 
-        shapedRecipe.setIngredient('I', Material.IRON_INGOT);
-        shapedRecipe.setIngredient('T', new RecipeChoice.ExactChoice(ferroFundido));
-        Bukkit.getServer().addRecipe(shapedRecipe);
+            shapedRecipe.setIngredient('I', Material.IRON_INGOT);
+            shapedRecipe.setIngredient('T', new RecipeChoice.ExactChoice(ferroFundido));
+            Bukkit.getServer().addRecipe(shapedRecipe);
+        }
     }
 
     private static void createTeste(){
@@ -153,7 +178,7 @@ public class ItemManager extends JavaPlugin {
         ItemStack item = new ItemStack(Material.IRON_SHOVEL, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
-                MilitaryFun.getPlugin().getConfig().getString("itens.name")));
+                MilitaryFun.getPlugin().getConfig().getStringList("itens.name").get(0)));
         List<String> lore = new ArrayList<>();
         lore.add("§3 Teste");
         meta.setLore(lore);

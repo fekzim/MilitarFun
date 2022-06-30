@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
+
 public final class MilitaryFun extends JavaPlugin {
 //CLASSE MAIN
 
@@ -19,11 +21,18 @@ public final class MilitaryFun extends JavaPlugin {
         //Config
         plugin.getConfig().options().copyDefaults(true);
         plugin.saveDefaultConfig();
-
-        System.out.println("==========================");
-        System.out.println("MilitaryFun ONLINE");
+        System.out.println("==========================================================================");
+        System.out.println(" #     #                                         ####### #     # #     # \n" +
+                " ##   ## # #      # #####   ##   #####  #   #    #       #     # ##    # \n" +
+                " # # # # # #      #   #    #  #  #    #  # #     #       #     # # #   # \n" +
+                " #  #  # # #      #   #   #    # #    #   #      #####   #     # #  #  # \n" +
+                " #     # # #      #   #   ###### #####    #      #       #     # #   # # \n" +
+                " #     # # #      #   #   #    # #   #    #      #       #     # #    ## \n" +
+                " #     # # ###### #   #   #    # #    #   #      #        #####  #     # \n" +
+                "                                                                         ");
+        System.out.println("==========================================================================");
         System.out.println("Author: Fek");
-        System.out.println("==========================");
+        System.out.println("Native-Language:" + plugin.getConfig().getString("militaryfun.language"));
         //Chama os metodos de criação de itens
         ItemManager.Init();
 

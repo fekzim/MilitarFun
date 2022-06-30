@@ -13,6 +13,9 @@ import org.bukkit.event.inventory.FurnaceStartSmeltEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+import java.util.Objects;
+
 public class CraftItem implements Listener {
 //Quando mexer sobre slot de itens no inventario, checar se ele é nulo ou ar
 
@@ -42,19 +45,14 @@ public class CraftItem implements Listener {
                 Player player = (Player) entity;
                 ItemStack[] item = event.getInventory().getMatrix();
 
-                if(event.getRecipe().getResult().getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&',MilitaryFun.getPlugin().getConfig()
-                        .getString("itens.name")))){
-                    player.sendMessage("Teste craftado");
-                }else{
-                    continue;
-                }
+                List<String> itensList = MilitaryFun.getPlugin().getConfig().getStringList("itens.name");
+                List<String> componentList = MilitaryFun.getPlugin().getConfig().getStringList("itens.components");
+                String resultName = Objects.requireNonNull(event.getRecipe().getResult().getItemMeta()).getDisplayName();
 
-                //Checar o resultado do craft e permitir eles, checar os nomes de uma lista
-                if(event.getRecipe().getResult().getItemMeta().getDisplayName().equals("§8§lPicareta de Ferro fundido")
-                || event.getRecipe().getResult().getItemMeta().getDisplayName().contains("§8§lPistola " + "§f[0]")){
+                //Checa se o item que vai fabricado é permitido na lista
+                if(itensList.contains(resultName.replaceAll("§","&"))){
                     break;
                 }
-
 
                 for (int i = 0; i < 9; i++){
                     //if (item == null || item.getType().equals(Material.AIR)
@@ -62,15 +60,10 @@ public class CraftItem implements Listener {
                         continue;
                     }
                     if(item[i].hasItemMeta()){
-                        switch (item[i].getItemMeta().getDisplayName()) {
-                            //Checar no futuro todos os nomes de uma lista futuramente aqui
-                            case "§7Tugstenio":
-                            case "§8Munição":
-                            case "§7Ferro Fundido" :
-                                event.setCancelled(true);
-                                break;
-                            default:
-                                break;
+                        //checa se algum item é do plugin e nega seu evento de craft
+                        if(componentList.contains(item[i].getItemMeta().getDisplayName().replaceAll("§", "&"))){
+                            event.setCancelled(true);
+                            break;
                         }
                     }
                 }
