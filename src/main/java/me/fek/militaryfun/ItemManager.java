@@ -1,6 +1,7 @@
 package me.fek.militaryfun;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Item;
@@ -24,6 +25,7 @@ public class ItemManager extends JavaPlugin {
         createMunition();
         createPistola();
         createTeste();
+        createTestedois();
     }
 
     //Itens
@@ -41,6 +43,8 @@ public class ItemManager extends JavaPlugin {
     public static ItemStack pistola;
 
     public static ItemStack teste;
+
+    public static ItemStack testedois;
 
     //Criação dos itens
 
@@ -142,6 +146,23 @@ public class ItemManager extends JavaPlugin {
         //Shapeless Recipe (independente da ordem)
         ShapelessRecipe srecipe = new ShapelessRecipe(NamespacedKey.minecraft("teste"), item);
         srecipe.addIngredient(2, Material.BEDROCK);
+        Bukkit.getServer().addRecipe(srecipe);
+    }
+
+    private static void createTestedois(){
+        ItemStack item = new ItemStack(Material.IRON_SHOVEL, 1);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
+                MilitaryFun.getPlugin().getConfig().getString("itens.name")));
+        List<String> lore = new ArrayList<>();
+        lore.add("§3 Teste");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        testedois = item;
+
+        //Shapeless Recipe (independente da ordem)
+        ShapelessRecipe srecipe = new ShapelessRecipe(NamespacedKey.minecraft("testedois"), item);
+        srecipe.addIngredient(3, Material.BEDROCK);
         Bukkit.getServer().addRecipe(srecipe);
     }
 }

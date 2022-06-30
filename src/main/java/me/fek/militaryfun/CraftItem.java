@@ -1,5 +1,6 @@
 package me.fek.militaryfun;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
@@ -41,11 +42,19 @@ public class CraftItem implements Listener {
                 Player player = (Player) entity;
                 ItemStack[] item = event.getInventory().getMatrix();
 
+                if(event.getRecipe().getResult().getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&',MilitaryFun.getPlugin().getConfig()
+                        .getString("itens.name")))){
+                    player.sendMessage("Teste craftado");
+                }else{
+                    continue;
+                }
+
                 //Checar o resultado do craft e permitir eles, checar os nomes de uma lista
                 if(event.getRecipe().getResult().getItemMeta().getDisplayName().equals("§8§lPicareta de Ferro fundido")
                 || event.getRecipe().getResult().getItemMeta().getDisplayName().contains("§8§lPistola " + "§f[0]")){
                     break;
                 }
+
 
                 for (int i = 0; i < 9; i++){
                     //if (item == null || item.getType().equals(Material.AIR)

@@ -1,7 +1,7 @@
 package me.fek.militaryfun;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
+import org.bukkit.entity.AbstractArrow;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,7 +36,15 @@ public class Guns implements Listener {
                 if(data.has(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)){
                     if(Objects.requireNonNull(data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)) > 0 && !(player.isSneaking())){
                         int municaoFinal =  Objects.requireNonNull(data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER));
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', MilitaryFun.getPlugin().getConfig().getString("militaryfun.message") + "boom"));
+
+                        Arrow a = player.launchProjectile(Arrow.class);
+                        a.setDamage(10);
+                        a.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
+
+                        player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1,3);
+                        player.spawnParticle(Particle.SMOKE_NORMAL, player.getLocation(), 3,3,3,3);
+                        player.spawnParticle(Particle.LAVA, player.getLocation(), 8,3,3,3);
+
                         municaoFinal -= 1;
                         data.set(new NamespacedKey(MilitaryFun.getPlugin(), "munition"), PersistentDataType.INTEGER, municaoFinal);
                         item.setItemMeta(meta);
@@ -60,7 +68,7 @@ public class Guns implements Listener {
                             ItemStack is = player.getInventory().getItem(slot);
                             if(is == null) continue;
                             if(is.getType() == Material.IRON_NUGGET){
-                                if(is.getItemMeta().getDisplayName().equals("§8Munição")){
+                                if(Objects.requireNonNull(is.getItemMeta()).getDisplayName().equals("§8Munição")){
                                     int leftMunition = munition - maxMunition;
                                     int newAmount = leftMunition + is.getAmount();
                                     if(newAmount <= 0){
