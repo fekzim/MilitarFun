@@ -2,6 +2,7 @@ militaryfun:
   message: '&f&l[&6&lMilitar&2Fun&f&l]:&r '
   language: 'pt-br'
   crafts: true
+  needmunition: true
 
 itens:
   name:

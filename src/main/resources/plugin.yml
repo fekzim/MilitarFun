@@ -4,7 +4,7 @@ main: me.fek.militaryfun.MilitaryFun
 api-version: 1.18
 authors: [ Fek ]
 commands:
-  configview:
-    description: OverView of configuration file
+  reload:
+    description: reload the actual weapon
     usage: /<command>
-    aliases: conv
+    aliases: gr

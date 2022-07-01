@@ -33,6 +33,7 @@ public final class MilitaryFun extends JavaPlugin {
         System.out.println("==========================================================================");
         System.out.println("Author: Fek");
         System.out.println("Native-Language:" + plugin.getConfig().getString("militaryfun.language"));
+        System.out.println("Need Munition:" + plugin.getConfig().getBoolean("militaryfun.needmunition"));
         //Chama os metodos de criação de itens
         ItemManager.Init();
 
@@ -42,7 +43,6 @@ public final class MilitaryFun extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Guns(), this);
 
         //Comandos
-        getCommand("configview").setExecutor(new Commands());
 
     }
 

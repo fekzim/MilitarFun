@@ -24,13 +24,13 @@ public class ItemManager extends JavaPlugin {
     //Arrumar um arquivo de configuração que permita habilitar e desabilitar certos itens
     public static void Init(){
         try{
-            createTugstenio();
             System.out.println("ItemManager Carregado com sucesso");
                 if(crafts){
                     System.out.println("Crafts geral-permitidos");
                 }else{
                     System.out.println("Crafts geral-negado");
                 }
+                createTugstenio();
                 createFerroFundido();
                 createPicaretaFundida();
                 createMunition();
@@ -56,10 +56,9 @@ public class ItemManager extends JavaPlugin {
     public static ItemStack picaretaFundida;
     public static ItemStack munition;
     public static ItemStack pistola;
-
     public static ItemStack teste;
-
     public static ItemStack testedois;
+
 
     //Criação dos itens
 

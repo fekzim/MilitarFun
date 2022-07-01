@@ -1,11 +1,10 @@
 package me.fek.militaryfun;
 import org.bukkit.*;
-import org.bukkit.entity.AbstractArrow;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -37,9 +36,13 @@ public class Guns implements Listener {
                     if(Objects.requireNonNull(data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER)) > 0 && !(player.isSneaking())){
                         int municaoFinal =  Objects.requireNonNull(data.get(new NamespacedKey(MilitaryFun.getPlugin(),"munition"), PersistentDataType.INTEGER));
 
-                        Arrow a = player.launchProjectile(Arrow.class);
+
+                        //Atirar
+                        /*Arrow a = player.launchProjectile(Arrow.class);
                         a.setDamage(10);
-                        a.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
+                        a.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);*/
+                        Snowball snow = player.launchProjectile(Snowball.class);
+                        snow.setVelocity(snow.getVelocity().multiply(2.9));
 
                         player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1,3);
                         player.spawnParticle(Particle.SMOKE_NORMAL, player.getLocation(), 3,3,3,3);
@@ -98,5 +101,30 @@ public class Guns implements Listener {
             return;
         }
 
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageByEntityEvent event){
+        if(event.getDamager() instanceof  Snowball){
+            System.out.println("Bola de neve atirada");
+            Snowball snowball = (Snowball) event.getDamager();
+            Player player = (Player) snowball.getShooter();
+            if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("§8§lPistola")){
+                player.sendMessage("player atirou com uma arma");
+                event.setDamage(10.0);
+            }else{
+                System.out.println("player não atirou com bola de neve");
+            }
+        }
+
+        if(event.getDamager() instanceof  Player){
+            if(event.getEntity() instanceof Snowball){
+                Snowball snowball = (Snowball) event.getDamager();
+                Player shooter = (Player) snowball.getShooter();
+                if(shooter.getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("§8§lPistola ")){
+                    event.setDamage(10.0);
+                }
+            }
+        }
     }
 }
