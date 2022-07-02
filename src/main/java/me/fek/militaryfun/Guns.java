@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.Vector;
 
 import java.util.Objects;
 
@@ -45,8 +46,7 @@ public class Guns implements Listener {
                         snow.setVelocity(snow.getVelocity().multiply(2.9));
 
                         player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1,3);
-                        player.spawnParticle(Particle.SMOKE_NORMAL, player.getLocation(), 3,3,3,3);
-                        player.spawnParticle(Particle.LAVA, player.getLocation(), 8,3,3,3);
+                        particle(player);
 
                         municaoFinal -= 1;
                         data.set(new NamespacedKey(MilitaryFun.getPlugin(), "munition"), PersistentDataType.INTEGER, municaoFinal);
@@ -125,6 +125,26 @@ public class Guns implements Listener {
                     event.setDamage(10.0);
                 }
             }
+        }
+    }
+
+    public static void particle(Player p) {
+        Vector v = p.getEyeLocation().getDirection().normalize();
+        Location loc = p.getEyeLocation();
+        double lineSize = 10.0;
+
+        for (double x = 0; x <= lineSize; x+=0.5) {
+            Vector vc = v.clone().multiply(x);
+
+            Location particleLoc = loc.clone().add(vc);
+
+            int particleQuantity = 0;
+            double offsetX = 0;
+            double offsetY = 0;
+            double offsetZ = 0;
+            double velocity = 0.05;
+
+            particleLoc.getWorld().spawnParticle(Particle.SMOKE_NORMAL, particleLoc, particleQuantity, offsetX, offsetY, offsetZ, velocity);
         }
     }
 }
